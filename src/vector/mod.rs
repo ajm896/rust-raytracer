@@ -1,37 +1,48 @@
 pub mod ops;
 #[derive(Debug, Clone, Copy)]
 pub struct Vec3 {
-    pub x: f64,
-    pub y: f64,
-    pub z: f64,
+    vec3: [f64; 3],
 }
 
 impl Vec3 {
-    pub fn new(x: f64, y: f64, z: f64) -> Self {
-        Vec3 { x, y, z }
+    pub fn new(arr: &[f64; 3]) -> Self {
+        Self { vec3: *arr }
     }
 
     pub fn dot(&self, other: &Vec3) -> f64 {
-        self.x * other.x + self.y * other.y + self.z * other.z
+        self.vec3[0] * other.vec3[0] + self.vec3[1] * other.vec3[1] + self.vec3[2] * other.vec3[2]
     }
 
-    pub fn cross(&self, other: &Vec3) -> Vec3 {
-        Vec3 {
-            x: self.y * other.z - self.z * other.y,
-            y: self.z * other.x - self.x * other.z,
-            z: self.x * other.y - self.y * other.x,
-        }
+    pub fn cross(&self, other: Vec3) -> Vec3 {
+        Vec3::new(&[
+            self[1] * other[2] - self[2] * other[1],
+            self[2] * other[0] - self[0] * other[2],
+            self[0] * other[1] - self[1] * other[0],
+        ])
     }
 
     pub fn normalize(&self) -> Vec3 {
-        self / self.length()
+        *self / self.length()
     }
 
     pub fn length(&self) -> f64 {
-        (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
+        (self[0].powi(2) + self[1].powi(2) + self[3].powi(2)).sqrt()
     }
 
     pub fn squared_length(&self) -> f64 {
         self.length().powi(2)
+    }
+}
+
+pub type Point = Vec3;
+impl Point {
+    pub fn x(&self) -> f64 {
+        self.vec3[0]
+    }
+    pub fn y(&self) -> f64 {
+        self.vec3[1]
+    }
+    pub fn z(&self) -> f64 {
+        self.vec3[2]
     }
 }
