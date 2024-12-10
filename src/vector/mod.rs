@@ -1,5 +1,5 @@
 pub mod ops;
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Vec3 {
     pub x: f64,
     pub y: f64,
@@ -23,11 +23,15 @@ impl Vec3 {
         }
     }
 
-    pub fn unit(&self) -> Vec3 {
-        self / self.magnitude()
+    pub fn normalize(&self) -> Vec3 {
+        self / self.length()
     }
 
-    pub fn magnitude(&self) -> f64 {
+    pub fn length(&self) -> f64 {
         (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
+    }
+
+    pub fn squared_length(&self) -> f64 {
+        self.length().powi(2)
     }
 }

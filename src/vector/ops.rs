@@ -1,4 +1,5 @@
-use std::ops::{Add, Div, Mul, Sub};
+use crate::vector::Vec3;
+use std::ops::{Add, Div, Index, Mul, Neg, Sub};
 impl Add for Vec3 {
     type Output = Self;
 
@@ -89,6 +90,30 @@ impl Div<f64> for &Vec3 {
             x: self.x / rhs,
             y: self.y / rhs,
             z: self.z / rhs,
+        }
+    }
+}
+
+impl Index<i8> for Vec3 {
+    type Output = f64;
+    fn index(&self, index: i8) -> &f64 {
+        match index {
+            0 => &self.x,
+            1 => &self.y,
+            2 => &self.z,
+            _ => panic!("Index out of bounds for Vec3"),
+        }
+    }
+}
+
+impl Neg for Vec3 {
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        Vec3 {
+            x: -self.x,
+            y: -self.y,
+            z: -self.z,
         }
     }
 }
