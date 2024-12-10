@@ -8,10 +8,23 @@ mod color;
 mod ray;
 mod vector;
 
+fn hit_sphere(center: Point, radius: f64, ray: &Ray) -> bool {
+    let oc: Vec3 = center - ray.origin();
+    let a = ray.direction().dot(&ray.direction());
+    let b = -2. * oc.dot(&ray.direction());
+    let c = oc.dot(&oc) - radius * radius;
+    let discriminant = b * b - 4. * a * c;
+    discriminant >= 0.0
+}
+
 fn ray_color(ray: &Ray) -> Color {
-    let unit_direction: Vec3 = ray.direction().normalize();
-    let a: f64 = 0.5 * (unit_direction.y() + 1.);
-    ((1. - a) * Color::colors(Presets::White)) + (a * Color::new(0.5, 0.7, 1.0))
+    if hit_sphere(Point::new(0., 0., -1.), 0.5, &ray) {
+        return Color::colors(Presets::Red);
+    } else {
+        let unit_direction: Vec3 = ray.direction().normalize();
+        let a: f64 = 0.5 * (unit_direction.y() + 1.);
+        return ((1. - a) * Color::colors(Presets::White)) + (a * Color::new(0.5, 0.7, 1.0));
+    }
 }
 
 fn main() {
