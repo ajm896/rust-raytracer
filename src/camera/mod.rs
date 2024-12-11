@@ -1,10 +1,6 @@
 use std::io::{self, Write};
 
-use rand::{
-    distributions::{Uniform},
-    prelude::Distribution,
-    thread_rng, Rng,
-};
+use rand::{distributions::Uniform, prelude::Distribution, thread_rng};
 
 use crate::{
     color::{Color, Presets},
