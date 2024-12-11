@@ -17,6 +17,5 @@ fn main() {
 
     camera.render(&world);
     // Render the image in P3 format. The color values are written to stdin
-
     println!("DONE");
 }

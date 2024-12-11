@@ -6,15 +6,15 @@ impl Color {
     }
 
     pub fn r(&self) -> f64 {
-        self[0] * 255.
+        256. * (self[0]).clamp(0.0, 1.0)
     }
 
     pub fn g(&self) -> f64 {
-        self[1] * 255.
+        256. * (self[1]).clamp(0.0, 1.0)
     }
 
     pub fn b(&self) -> f64 {
-        self[2] * 255.
+        256. * (self[2]).clamp(0.0, 1.0)
     }
 
     pub fn colors(preset: Presets) -> Color {

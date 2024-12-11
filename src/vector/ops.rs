@@ -1,5 +1,5 @@
 use crate::vector::Vec3;
-use std::ops::{Add, Div, Index, Mul, Neg, Sub};
+use std::ops::{Add, AddAssign, Div, Index, IndexMut, Mul, Neg, Sub};
 
 // A + B
 impl Add for Vec3 {
@@ -58,6 +58,20 @@ impl Neg for Vec3 {
 
     fn neg(self) -> Self::Output {
         -1. * self
+    }
+}
+
+impl AddAssign for Vec3 {
+    fn add_assign(&mut self, rhs: Self) {
+        self[0] += rhs[0];
+        self[1] += rhs[1];
+        self[2] += rhs[2];
+    }
+}
+
+impl IndexMut<usize> for Vec3 {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.vec3[index]
     }
 }
 
