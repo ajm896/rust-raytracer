@@ -1,7 +1,7 @@
 use std::io::{self, Write};
 
 use color::{Color, Presets};
-use geometry::interval::{self, Interval};
+use geometry::interval::Interval;
 use geometry::{sphere::Sphere, HitRecord, Hittable, HittableList};
 use ray::Ray;
 use vector::{Point, Vec3};
