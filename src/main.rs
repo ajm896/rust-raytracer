@@ -16,6 +16,6 @@ fn main() {
     world.add(Box::new(Sphere::new(Point::new(0., 0.0, -1.), 0.5)));
 
     camera.render(&world);
-    // Render the image in P3 format. The color values are written to stdin
+
     println!("DONE");
 }

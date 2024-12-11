@@ -1,6 +1,10 @@
 use std::io::{self, Write};
 
-use rand::{thread_rng, Rng};
+use rand::{
+    distributions::{self, Uniform},
+    prelude::Distribution,
+    thread_rng, Rng,
+};
 
 use crate::{
     color::{Color, Presets},
@@ -51,6 +55,7 @@ impl Camera {
             "P3\n{} {}\n255",
             self.image_width as usize, self.image_height as usize
         );
+
         for j in 0..self.image_height as usize {
             //Progress Bar
             io::stderr()
@@ -66,7 +71,7 @@ impl Camera {
                     let r: Ray = self.get_ray(i, j);
                     pixel_color += self.ray_color(&r, &world);
                 }
-
+                pixel_color = self.pixel_sample_scale * pixel_color;
                 pixel_color.write_color()
             }
         }
@@ -75,7 +80,7 @@ impl Camera {
     fn ray_color(&self, ray: &Ray, world: &HittableList) -> Color {
         let mut tmp_hit_rec = HitRecord::default();
 
-        if world.hit(ray, &Interval { range: 0.0..100. }, &mut tmp_hit_rec) {
+        if world.hit(ray, &Interval { range: 0.0..1000. }, &mut tmp_hit_rec) {
             return 0.5 * (tmp_hit_rec.get_normal() + Color::new(1., 1., 1.));
         }
 
@@ -101,6 +106,8 @@ impl Default for Camera {
     fn default() -> Self {
         // Image Dimensions
         let samples_per_pixel: f64 = 100.;
+        let pixel_sample_scale: f64 = (samples_per_pixel as f64).recip();
+
         let aspect_ratio: f64 = 16. / 9.;
         let image_width: f64 = 1920. * 0.25;
         let image_height: f64 = image_width / aspect_ratio;
@@ -123,8 +130,7 @@ impl Default for Camera {
             - (viewport_v / 2.);
 
         let pixel00_loc: Point = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
-        let samples_per_row = 10.;
-        let pixel_sample_scale: f64 = (samples_per_row as f64).recip();
+
         Camera::new(
             image_width,
             aspect_ratio,
@@ -141,8 +147,9 @@ impl Default for Camera {
 
 fn sample_square() -> Point {
     let mut rng = thread_rng();
-    let x = rng.gen_range(0.0..1.0);
-    let y = rng.gen_range(0.0..1.0);
-    let z = 0.0;
+    let distribution = Uniform::from(0.0..1.0);
+    let x: f64 = distribution.sample(&mut rng);
+    let y: f64 = distribution.sample(&mut rng);
+    let z: f64 = 0.0;
     Point::new(x, y, z)
 }
