@@ -9,7 +9,7 @@ mod ray;
 mod vector;
 
 fn main() {
-    let mut camera = Camera::default();
+    let camera = Camera::default();
     let mut world = HittableList::new();
 
     world.add(Box::new(Sphere::new(Point::new(0., -101., -1.), 100.)));
