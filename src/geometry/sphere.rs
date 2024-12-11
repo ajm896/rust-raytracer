@@ -3,7 +3,7 @@ use crate::{
     vector::{Point, Vec3},
 };
 
-use super::{HitRecord, Hittable};
+use super::{interval, HitRecord, Hittable};
 pub struct Sphere {
     center: Point,
     radius: f64,
@@ -16,7 +16,7 @@ impl Sphere {
 }
 
 impl Hittable for Sphere {
-    fn hit(&self, ray: &Ray, t_min: f64, t_max: f64, hit_record: &mut HitRecord) -> bool {
+    fn hit(&self, ray: &Ray, t_range: &interval::Interval, hit_record: &mut HitRecord) -> bool {
         let oc: Vec3 = self.center - ray.origin();
         let a = ray.direction().squared_length();
         let h: f64 = oc.dot(&ray.direction());
@@ -29,9 +29,10 @@ impl Hittable for Sphere {
         let sqrtd = discriminant.sqrt();
 
         let mut root: f64 = (h - sqrtd) / a;
-        if root <= t_min || t_max <= root {
+
+        if !t_range.surrounds(&root) {
             root = (h + sqrtd) / a;
-            if root <= t_min || t_max <= root {
+            if !t_range.surrounds(&root) {
                 return false;
             }
         }

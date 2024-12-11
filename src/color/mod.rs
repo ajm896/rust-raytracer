@@ -26,6 +26,10 @@ impl Color {
             Presets::Blue => Color::new(0.0, 0.0, 1.0),
         }
     }
+
+    pub fn from_vec3(color: Vec3) -> Color {
+        Color::new(color[0], color[1], color[2])
+    }
 }
 
 pub enum Presets {

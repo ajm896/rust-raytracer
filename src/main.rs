@@ -1,7 +1,8 @@
 use std::io::{self, Write};
 
 use color::{Color, Presets};
-use geometry::sphere::Sphere;
+use geometry::interval::{self, Interval};
+use geometry::{sphere::Sphere, HitRecord, Hittable, HittableList};
 use ray::Ray;
 use vector::{Point, Vec3};
 
@@ -10,11 +11,10 @@ mod geometry;
 mod ray;
 mod vector;
 
-fn ray_color(ray: &Ray) -> Color {
-    let s1 = Sphere::new(Point::new(0., 0., -1.), 0.5);
-    if false {
-        let normal = (ray.at(0.) - Vec3::new(0., 0., -1.)).normalize();
-        return 0.5 * Color::new(normal.x() + 1., normal.y() + 1., normal.z() + 1.);
+fn ray_color(ray: &Ray, world: &HittableList) -> Color {
+    let mut tmp_hit_rec = HitRecord::default();
+    if world.hit(ray, &Interval { range: 0.0..100. }, &mut tmp_hit_rec) {
+        return 0.5 * (tmp_hit_rec.get_normal() + Color::new(1., 1., 1.));
     } else {
         let unit_direction: Vec3 = ray.direction().normalize();
         let a: f64 = 0.5 * (unit_direction.y() + 1.);
@@ -45,6 +45,11 @@ fn main() {
 
     let pixel00_loc: Point = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
 
+    let mut world = HittableList::new();
+
+    world.add(Box::new(Sphere::new(Point::new(0., -101., -1.), 100.)));
+    world.add(Box::new(Sphere::new(Point::new(0., 0.0, -1.), 0.5)));
+
     // Render the image in P3 format. The color values are written to stdin
     println!(
         "P3\n{} {}\n255",
@@ -61,7 +66,7 @@ fn main() {
             let ray_direction: Vec3 = pixel_center - camera_center;
             let r: Ray = Ray::new(camera_center, ray_direction);
 
-            let pixel_color: Color = ray_color(&r);
+            let pixel_color: Color = ray_color(&r, &world);
             pixel_color.write_color()
         }
     }
