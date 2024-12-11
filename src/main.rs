@@ -40,10 +40,10 @@ fn main() {
     let camera_center: Point = Point::new(0.0, 0.0, 0.0);
 
     let viewport_u: Vec3 = Vec3::new(view_port_width, 0.0, 0.0);
-    let viewport_v: Vec3 = Vec3::new(0., -1.0 * view_port_height as f64, 0.0);
+    let viewport_v: Vec3 = Vec3::new(0., -view_port_height as f64, 0.0);
 
-    let pixel_delta_u: Vec3 = viewport_u / view_port_width;
-    let pixel_delta_v: Vec3 = viewport_v / view_port_height;
+    let pixel_delta_u: Vec3 = viewport_u / image_width;
+    let pixel_delta_v: Vec3 = viewport_v / image_height;
 
     let viewport_upper_left =
         camera_center - Point::new(0., 0., focal_length) - (viewport_u / 2.) - (viewport_v / 2.);
@@ -51,7 +51,10 @@ fn main() {
     let pixel00_loc: Point = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
 
     // Render the image in P3 format. The color values are written to stdin
-    println!("P3\n{} {}\n255", image_width, image_height);
+    println!(
+        "P3\n{} {}\n255",
+        image_width as usize, image_height as usize
+    );
     for j in 0..image_height as usize {
         io::stderr()
             .write_all(format!("\rScanlines Remaining: {}", image_height - j as f64).as_bytes())
