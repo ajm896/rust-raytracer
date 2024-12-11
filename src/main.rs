@@ -1,25 +1,20 @@
 use std::io::{self, Write};
 
 use color::{Color, Presets};
+use geometry::sphere::Sphere;
 use ray::Ray;
 use vector::{Point, Vec3};
 
 mod color;
+mod geometry;
 mod ray;
 mod vector;
 
-fn hit_sphere(center: Point, radius: f64, ray: &Ray) -> bool {
-    let oc: Vec3 = center - ray.origin();
-    let a = ray.direction().dot(&ray.direction());
-    let b = -2. * oc.dot(&ray.direction());
-    let c = oc.dot(&oc) - radius * radius;
-    let discriminant = b * b - 4. * a * c;
-    discriminant >= 0.0
-}
-
 fn ray_color(ray: &Ray) -> Color {
-    if hit_sphere(Point::new(0., 0., -1.), 0.5, &ray) {
-        return Color::colors(Presets::Red);
+    let s1 = Sphere::new(Point::new(0., 0., -1.), 0.5);
+    if false {
+        let normal = (ray.at(0.) - Vec3::new(0., 0., -1.)).normalize();
+        return 0.5 * Color::new(normal.x() + 1., normal.y() + 1., normal.z() + 1.);
     } else {
         let unit_direction: Vec3 = ray.direction().normalize();
         let a: f64 = 0.5 * (unit_direction.y() + 1.);
