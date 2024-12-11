@@ -1,7 +1,7 @@
 use std::io::{self, Write};
 
 use rand::{
-    distributions::{self, Uniform},
+    distributions::{Uniform},
     prelude::Distribution,
     thread_rng, Rng,
 };
