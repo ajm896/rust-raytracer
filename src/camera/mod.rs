@@ -68,7 +68,7 @@ impl Camera {
 
                 for _ in 0..self.samples_per_pixel as usize {
                     let r: Ray = self.get_ray(i, j);
-                    pixel_color += self.ray_color(&r, &world);
+                    pixel_color += self.ray_color(&r, &world, self.max_depth);
                 }
                 pixel_color = self.pixel_sample_scale * pixel_color;
                 pixel_color.write_color()
