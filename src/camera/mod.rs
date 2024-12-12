@@ -76,11 +76,20 @@ impl Camera {
         }
     }
 
-    fn ray_color(&self, ray: &Ray, world: &HittableList) -> Color {
+    fn ray_color(&self, ray: &Ray, world: &HittableList, current_depth: usize) -> Color {
+        if current_depth <= 0 {
+            return Color::new(0., 0., 0.);
+        }
         let mut tmp_hit_rec = HitRecord::default();
 
         if world.hit(ray, &Interval { range: 0.0..1000. }, &mut tmp_hit_rec) {
-            return 0.5 * (tmp_hit_rec.get_normal() + Color::new(1., 1., 1.));
+            let direction = Vec3::random_vec_on_hemisphere(&tmp_hit_rec.get_normal());
+            return 0.5
+                * self.ray_color(
+                    &Ray::new(tmp_hit_rec.point(), direction),
+                    &world,
+                    current_depth - 1,
+                );
         }
 
         let unit_direction: Vec3 = ray.direction().normalize();
