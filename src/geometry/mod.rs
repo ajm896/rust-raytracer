@@ -101,6 +101,7 @@ impl Hittable for HittableList {
 pub mod interval {
     use core::f64;
     use std::ops::Range;
+
     pub struct Interval {
         pub range: Range<f64>,
     }
@@ -113,14 +114,6 @@ pub mod interval {
         }
         pub fn surrounds(&self, value: &f64) -> bool {
             (self.range.start - 1. ..self.range.end + 1.).contains(value)
-        }
-
-        pub fn contains(&self, value: &f64) -> bool {
-            self.range.contains(value)
-        }
-
-        pub fn size(&self) -> f64 {
-            self.range.end - self.range.start
         }
     }
 }
