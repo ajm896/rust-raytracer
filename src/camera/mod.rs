@@ -11,7 +11,7 @@ use crate::{
 
 pub struct Camera {
     pub image_width: f64,
-    pub aspect_ratio: f64,
+    //pub aspect_ratio: f64,
     camera_origin: Point,
     image_height: f64,
     pixel00_loc: Point,
@@ -24,7 +24,7 @@ pub struct Camera {
 impl Camera {
     fn new(
         image_width: f64,
-        aspect_ratio: f64,
+        //aspect_ratio: f64,
         camera_origin: Point,
         image_height: f64,
         pixel00_loc: Point,
@@ -35,7 +35,7 @@ impl Camera {
     ) -> Camera {
         Camera {
             image_width,
-            aspect_ratio,
+            //aspect_ratio,
             camera_origin,
             image_height,
             pixel00_loc,
@@ -129,7 +129,7 @@ impl Default for Camera {
 
         Camera::new(
             image_width,
-            aspect_ratio,
+            //aspect_ratio,
             camera_origin,
             image_height,
             pixel00_loc,

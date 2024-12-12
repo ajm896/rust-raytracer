@@ -19,15 +19,6 @@ pub struct HitRecord {
 }
 
 impl HitRecord {
-    pub fn new(point: Point, normal: Vec3, hit_t: f64, front_face: bool) -> Self {
-        Self {
-            point,
-            normal,
-            hit_t,
-            front_face,
-        }
-    }
-
     fn set_face_normal(&mut self, ray: &Ray, outward_normal: &Vec3) {
         // Sets the hit record normal vector.
         // NOTE: the parameter `outward_normal` is assumed to have unit length.
@@ -38,10 +29,6 @@ impl HitRecord {
         } else {
             -(outward_normal.clone())
         }
-    }
-
-    pub fn set_point(&mut self, point: Point) {
-        self.point = point;
     }
 
     pub fn get_normal(&self) -> Vec3 {
@@ -69,16 +56,8 @@ impl HittableList {
         HittableList { list: Vec::new() }
     }
 
-    pub fn get(&self, index: usize) -> Option<&Box<dyn Hittable>> {
-        self.list.get(index)
-    }
-
     pub fn add(&mut self, hittable: Box<dyn Hittable>) {
         self.list.push(hittable);
-    }
-
-    pub fn clear(&mut self) {
-        self.list.clear();
     }
 }
 
@@ -118,13 +97,7 @@ impl Hittable for HittableList {
 pub mod interval {
     use core::f64;
     use std::ops::Range;
-    const EMPTY_INTERVAL: Interval = Interval {
-        range: (f64::INFINITY..-f64::INFINITY),
-    };
 
-    const UNIVERSE_INTERVAL: Interval = Interval {
-        range: (-f64::INFINITY..f64::INFINITY),
-    };
     pub struct Interval {
         pub range: Range<f64>,
     }
@@ -132,14 +105,6 @@ pub mod interval {
     impl Interval {
         pub fn surrounds(&self, value: &f64) -> bool {
             (self.range.start - 1. ..self.range.end + 1.).contains(value)
-        }
-
-        pub fn contains(&self, value: &f64) -> bool {
-            self.range.contains(value)
-        }
-
-        pub fn size(&self) -> f64 {
-            self.range.end - self.range.start
         }
     }
 }
