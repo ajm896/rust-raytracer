@@ -11,7 +11,7 @@ use crate::{
 
 pub struct Camera {
     pub image_width: f64,
-    pub aspect_ratio: f64,
+    //pub aspect_ratio: f64,
     camera_origin: Point,
     image_height: f64,
     pixel00_loc: Point,
@@ -19,12 +19,13 @@ pub struct Camera {
     pixel_delta_v: Vec3,
     pixel_sample_scale: f64,
     samples_per_pixel: f64,
+    max_depth: usize,
 }
 
 impl Camera {
     fn new(
         image_width: f64,
-        aspect_ratio: f64,
+        //aspect_ratio: f64,
         camera_origin: Point,
         image_height: f64,
         pixel00_loc: Point,
@@ -32,10 +33,11 @@ impl Camera {
         pixel_delta_v: Vec3,
         pixel_sample_scale: f64,
         samples_per_pixel: f64,
+        max_depth: usize,
     ) -> Camera {
         Camera {
             image_width,
-            aspect_ratio,
+            //aspect_ratio,
             camera_origin,
             image_height,
             pixel00_loc,
@@ -43,6 +45,7 @@ impl Camera {
             pixel_delta_v,
             pixel_sample_scale,
             samples_per_pixel,
+            max_depth,
         }
     }
 
@@ -103,6 +106,7 @@ impl Default for Camera {
         // Image Dimensions
         let samples_per_pixel: f64 = 100.;
         let pixel_sample_scale: f64 = (samples_per_pixel as f64).recip();
+        let max_depth: usize = 50;
 
         let aspect_ratio: f64 = 16. / 9.;
         let image_width: f64 = 1920. * 0.25;
@@ -129,7 +133,7 @@ impl Default for Camera {
 
         Camera::new(
             image_width,
-            aspect_ratio,
+            //aspect_ratio,
             camera_origin,
             image_height,
             pixel00_loc,
@@ -137,6 +141,7 @@ impl Default for Camera {
             pixel_delta_v,
             pixel_sample_scale,
             samples_per_pixel,
+            max_depth,
         )
     }
 }

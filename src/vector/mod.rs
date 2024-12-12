@@ -1,3 +1,9 @@
+use core::f64;
+
+use rand::{distributions::Uniform, prelude::Distribution, thread_rng};
+
+use crate::geometry::interval::Interval;
+
 pub mod ops;
 #[derive(Debug, Clone, Copy)]
 pub struct Vec3 {
